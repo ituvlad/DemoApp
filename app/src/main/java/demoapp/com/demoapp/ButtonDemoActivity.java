@@ -6,9 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ButtonDemoActivity extends ActionBarActivity {
+public class ButtonDemoActivity extends BaseActivity {
 
-    public static String ACTIVITY_ID = "Button Demo";
+    private static String ACTIVITY_ID = "Button Demo";
+
+    @Override
+    public String getActivityName() {
+        return ACTIVITY_ID;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
