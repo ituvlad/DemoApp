@@ -1,5 +1,8 @@
 package demoapp.com.demoapp;
 
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,10 +28,16 @@ public class MainActivity extends ActionBarActivity {
     private String[] getActivitiesInPackage() {
         String[] activities = {};
 
-        /*Reflections reflections = new Reflections("my.project.prefix");
-
-        Set<Class<? extends Object>> allClasses =
-                reflections.getSubTypesOf(Object.class);*/
+        try {
+            PackageInfo pkgInfo = getPackageManager().getPackageInfo("demoapp.com.demoapp", PackageManager.GET_ACTIVITIES);
+            ActivityInfo[] activityInfos = pkgInfo.activities;
+            activities = new String[activityInfos.length];
+            for(int i = 0; i < activityInfos.length; i++) {
+                activities[i] = activityInfos[i].name;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return activities;
     }
@@ -36,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
     private void createList() {
         ListView lvActivities = (ListView) findViewById(R.id.lvActivities);
 
-        String[] values = {"Test1", "Test2"};
+        String[] values = getActivitiesInPackage();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, values);
 
         lvActivities.setAdapter(adapter);
